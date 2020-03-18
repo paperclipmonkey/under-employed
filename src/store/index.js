@@ -2,14 +2,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import websocketPlugin from './websocketPlugin'
-import { RootState } from './ types'
 
 const socket = new WebSocket('ws://localhost:8080')
 const ws = websocketPlugin(socket)
 
 Vue.use(Vuex)
 
-export default new Vuex.Store<RootState>({
+export default new Vuex.Store({
   state: {
     id: '', // Players ID in the game
     hand: ['one', 'two', 'three', 'four'],
@@ -28,7 +27,7 @@ export default new Vuex.Store<RootState>({
     PLAYCARD () { }, // eslint-disable-line @typescript-eslint/no-empty-function
     DEALER () { }, // eslint-disable-line @typescript-eslint/no-empty-function
     RESET () { }, // eslint-disable-line @typescript-eslint/no-empty-function
-    receiveData (state: RootState, payload) {
+    receiveData (state, payload) {
       console.log(payload)
       if (payload.id) {
         state.id = payload.id

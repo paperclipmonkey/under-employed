@@ -6,7 +6,6 @@ const WebSocket = require('ws')
 const joblist = require('./jobs.json')
 const qualificationlist = require('./qualifications.json')
 
-
 const wss = new WebSocket.Server({ port: process.env.PORT })
 
 console.log(`Listening on port ${process.env.PORT}`)
