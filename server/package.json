@@ -1,0 +1,13 @@
+{
+  "name": "under-employed-server",
+  "version": "0.0.1",
+  "description": "Websocket server for under-employed",
+  "main": "index.js",
+  "author": "MW",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "uuid": "^7.0.2",
+    "ws": "^7.2.3"
+  }
+}

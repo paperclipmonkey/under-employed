@@ -1,14 +1,88 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <h1>Under Employed</h1>
+    <h2> Job interview for: {{ round.job }} </h2>
+
+    <!-- <router-view/> -->
+    <template v-if="!player.dealer">
+      <my-hand @selectCard="selectedHandCard = $event" :selected="selectedHandCard" :cards="hand" />
+      <pool @selectCard="selectedPoolCard = $event" :selected="selectedPoolCard" v-if="round.mode === 'deck'" :cards="round.qualificationPool" />
+    </template>
+
+    <dealer v-if="player.dealer" @selectCard="selectedHandCard = $event" :selected="selectedHandCard" :cards="hand" />
+
+    <played-cards v-if="round.mode === 'interview'" :cards="round.shownCards" />
+
   </div>
 </template>
+<script>
+import { mapState, mapActions } from 'vuex'
+import myHand from '@/views/MyHand'
+import pool from '@/views/Pool'
+import dealer from '@/views/Dealer'
+import playedCards from '@/views/PlayedCards'
 
+export default {
+  components: {
+    myHand,
+    pool,
+    playedCards,
+    dealer
+  },
+  data () {
+    return {
+      selectedPoolCard: '',
+      selectedHandCard: ''
+    }
+  },
+  computed: {
+    ...mapState(['hand', 'round', 'player'])
+  },
+  watch: {
+    selectedHandCard () {
+      this.playCard()
+    },
+    selectedPoolCard () {
+      this.swapCards()
+    }
+  },
+  methods: {
+    playCard () {
+      if (this.round.mode === 'deck') {
+        console.log('swapping cards only')// swapping cards only.
+        this.swapCards()
+        return
+      }
+      this.$store.dispatch('playCard', { handCard: this.selectedHandCard })
+    },
+    swapCards () {
+      if (!this.selectedHandCard || !this.selectedPoolCard) return
+      this.$store.dispatch('swapCards', { handCard: this.selectedHandCard, poolCard: this.selectedPoolCard })
+      this.selectedPoolCard = ''
+      this.selectedHandCard = ''
+    },
+    ...mapActions(['setDealer'])
+  },
+  mounted () {
+    window.addEventListener('keyup', (event) => {
+      // If down arrow was pressed...
+      if (event.keyCode === 68) { // d button
+        this.setDealer()
+      }
+    })
+  }
+}
+</script>
 <style lang="scss">
+h1 {
+  clear: both;
+}
+.reset, .next {
+  float:right;
+  margin: 5px;
+  padding: 5px;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

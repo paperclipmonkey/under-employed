@@ -1,4 +1,6 @@
-# under-employed
+# Under Employed
+
+A game to play in isolation over webcam
 
 ## Project setup
 ```
@@ -32,3 +34,13 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+## TODO
+* Styling
+
+* Heartbeat
+
+* Enable / pass dealer mode
+
+* small screen styling
