@@ -6,11 +6,10 @@ const WebSocket = require('ws')
 const joblist = require('./jobs.json')
 const qualificationlist = require('./qualifications.json')
 
-const port = 8080
 
-const wss = new WebSocket.Server({ port })
+const wss = new WebSocket.Server({ port: process.env.PORT })
 
-console.log(`Listening on port ${port}`)
+console.log(`Listening on port ${process.env.PORT}`)
 
 const CARDSDEALTCOUNT = 4
 const POOLCARDSCOUNT = 10
