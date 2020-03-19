@@ -1,12 +1,29 @@
 // tslint-disable @typescript-eslint/no-var-requires
 const v4 = require('uuid').v4
-
+const http = require('http')
+const finalhandler = require('finalhandler')
+const serveStatic = require('serve-static')
 const WebSocket = require('ws')
-
 const joblist = require('./jobs.json')
 const qualificationlist = require('./qualifications.json')
 
-const wss = new WebSocket.Server({ port: process.env.PORT })
+var serve = serveStatic("./dist")
+
+var server = http.createServer(function (req, res) {
+  var done = finalhandler(req, res)
+  serve(req, res, done)
+});
+
+server.listen(process.env.PORT);
+
+const wss = new WebSocket.Server({noServer: true })
+
+// Take over websocket connections
+server.on('upgrade', function upgrade(request, socket, head) {
+  wss.handleUpgrade(request, socket, head, function done(ws) {
+    wss.emit('connection', ws, request);
+  })
+})
 
 console.log(`Listening on port ${process.env.PORT}`)
 
@@ -107,7 +124,6 @@ function getDealer () {
 }
 
 function removePlayer(id) {
-  console.log('Removing player')
   delete state.round.players[id]
 }
 
@@ -140,7 +156,6 @@ function setDealer (id) {
 resetRound() // Reset game on startup
 
 function heartbeat() {
-  console.log('ponged')
   this.isAlive = true;
 }
 
@@ -201,7 +216,6 @@ function noop() {}
 
 // Kill inactive clients
 const interval = setInterval(function ping() {
-  console.log('ping')
   wss.clients.forEach(function each(ws) {
     if (ws.isAlive === false) {
       removePlayer(ws.uuid)
@@ -212,9 +226,8 @@ const interval = setInterval(function ping() {
     ws.isAlive = false;
     ws.ping(noop)
   });
-}, 3000);
+}, 10*1000);
 
 wss.on('close', function close() {
-  console.log('Someone disconnected');
   clearInterval(interval)
 });
