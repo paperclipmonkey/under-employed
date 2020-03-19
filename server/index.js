@@ -106,6 +106,11 @@ function getDealer () {
   return dealer
 }
 
+function removePlayer(id) {
+  console.log('Removing player')
+  delete state.round.players[id]
+}
+
 /**
  * Deals extra cards to a new player
  */
@@ -134,7 +139,14 @@ function setDealer (id) {
 
 resetRound() // Reset game on startup
 
+function heartbeat() {
+  console.log('ponged')
+  this.isAlive = true;
+}
+
 wss.on('connection', function connection (ws) {
+  ws.isAlive = true;
+  ws.on('pong', heartbeat);
   // Give player unique id.
   const id = v4()
   const isDealer = !Object.keys(state.round.players).length
@@ -147,6 +159,11 @@ wss.on('connection', function connection (ws) {
 
   broadcast() // Updates dealer as well
   // ws.send(JSON.stringify({ round: state.round }))
+
+  ws.on('close', function() {
+    removePlayer(ws.uuid)
+    broadcast()
+  })
 
   ws.on('message', function incoming (message) {
     console.log(message)
@@ -179,3 +196,25 @@ wss.on('connection', function connection (ws) {
 
   // TODO periodically send out full state to all players anyway?
 })
+
+function noop() {}
+
+// Kill inactive clients
+const interval = setInterval(function ping() {
+  console.log('ping')
+  wss.clients.forEach(function each(ws) {
+    if (ws.isAlive === false) {
+      removePlayer(ws.uuid)
+      broadcast()
+      return ws.terminate()
+    }
+
+    ws.isAlive = false;
+    ws.ping(noop)
+  });
+}, 3000);
+
+wss.on('close', function close() {
+  console.log('Someone disconnected');
+  clearInterval(interval)
+});

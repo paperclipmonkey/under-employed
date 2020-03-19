@@ -74,6 +74,8 @@ export default {
 }
 </script>
 <style lang="scss">
+@import '~animate.css';
+
 h1 {
   clear: both;
 }

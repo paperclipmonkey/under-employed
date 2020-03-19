@@ -37,10 +37,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
 ## TODO
-* Styling
+* Testing
 
-* Heartbeat
+* Serve web pages
 
-* Enable / pass dealer mode
-
-* small screen styling
+* Introduction

@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="{selected}" @click="$emit('click', name)">
+  <div class="card animated bounceIn" :class="{selected}" @click="$emit('click', name)">
         <div class="card-content">
             <span>{{name}}</span>
         </div>
@@ -21,6 +21,10 @@ export default {
         box-shadow: 2px 2px 10px rgb(145, 145, 145);
         background:rgb(170, 99, 99);
         color: #fff;
+        font-size: 15px;
+        transition-property: all;
+        transition-duration: 250ms;
+        cursor: pointer;
     }
     .card-content {
           transform: rotate(-15deg);
@@ -32,5 +36,13 @@ export default {
     }
     .selected {
         border: 3px solid #000;
+    }
+
+    @media (max-width: 500px) {
+        .card {
+            width: 66px;
+            height: 100px;
+            font-size: 12px;
+        }
     }
 </style>
