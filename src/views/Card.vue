@@ -14,12 +14,12 @@ export default {
     .card {
         width: 100px;
         height: 150px;
-        border: 1px solid #000;
+        border: 3px solid rgb(46, 45, 45);
         border-radius: 5px;
         margin: 10px;
         overflow: hidden;
         box-shadow: 2px 2px 10px rgb(145, 145, 145);
-        background:rgb(170, 99, 99);
+        background:rgb(206, 80, 80);
         color: #fff;
         font-size: 15px;
         transition-property: all;
@@ -35,7 +35,8 @@ export default {
         vertical-align: middle;
     }
     .selected {
-        border: 3px solid #000;
+        border: 3px solid rgb(0, 0, 0);
+        background:rgb(194, 48, 48);
     }
 
     @media (max-width: 500px) {
