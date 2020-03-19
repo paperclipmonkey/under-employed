@@ -1,18 +1,22 @@
 <template>
   <div id="app">
     <h1>Under Employed</h1>
-    <h2> Job interview for: {{ round.job }} </h2>
+    <h2> Today, you're interviewing for: </h2>
+    
+    <div class="jobholder">
+      <job :name="round.job"/>
+    </div>
 
     <!-- <router-view/> -->
     <template v-if="!player.dealer">
       <my-hand @selectCard="selectedHandCard = $event" :selected="selectedHandCard" :cards="hand" />
       <pool @selectCard="selectedPoolCard = $event" :selected="selectedPoolCard" v-if="round.mode === 'deck'" :cards="round.qualificationPool" />
+      <countdown/>
     </template>
 
     <dealer v-if="player.dealer" @selectCard="selectedHandCard = $event" :selected="selectedHandCard" :cards="hand" />
 
     <played-cards v-if="round.mode === 'interview'" :cards="round.shownCards" />
-
   </div>
 </template>
 <script>
@@ -21,13 +25,17 @@ import myHand from '@/views/MyHand'
 import pool from '@/views/Pool'
 import dealer from '@/views/Dealer'
 import playedCards from '@/views/PlayedCards'
+import job from '@/views/Job'
+import countdown from '@/views/Countdown'
 
 export default {
   components: {
     myHand,
     pool,
     playedCards,
-    dealer
+    dealer,
+    job,
+    countdown
   },
   data () {
     return {
@@ -83,6 +91,12 @@ h1 {
   float:right;
   margin: 5px;
   padding: 5px;
+}
+
+.jobholder {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 #app {

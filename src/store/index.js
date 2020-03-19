@@ -4,7 +4,8 @@ import Vuex from 'vuex'
 import websocketPlugin from './websocketPlugin'
 
 // const socket = new WebSocket('ws://under-employed.herokuapp.com/')
-const socket = new WebSocket("ws://" + window.location.host)
+const socket = new WebSocket('ws://localhost:5000')
+// const socket = new WebSocket("ws://" + window.location.host)
 const ws = websocketPlugin(socket)
 
 Vue.use(Vuex)

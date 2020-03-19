@@ -124,7 +124,18 @@ function getDealer () {
 }
 
 function removePlayer(id) {
+  let createNewDealer = false
+  if (state.round.players[id].dealer) {
+    createNewDealer = true
+  }
   delete state.round.players[id]
+
+  if(createNewDealer) {
+    firstKey = Object.entries(state.round.players)[0]
+    if (firstKey) {
+      state.round.players[firstKey].dealer = true // Pass the baton on
+    }
+  }
 }
 
 /**
@@ -164,7 +175,7 @@ wss.on('connection', function connection (ws) {
   ws.on('pong', heartbeat);
   // Give player unique id.
   const id = v4()
-  const isDealer = !Object.keys(state.round.players).length
+  const isDealer = !Object.entries(state.round.players).length
   state.round.players[id] = { // Set up a player object
     cards: !isDealer ? dealExtra() : [],
     dealer: isDealer // First player becomes dealer

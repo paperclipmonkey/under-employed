@@ -1,6 +1,6 @@
 <template>
   <div class="pool">
-    <h1>Pool</h1>
+    <h2>Or switch them out for:</h2>
     <div class="cards">
         <card @click="$emit('selectCard', $event)" v-for="card in cards" :selected="selected === card" :key="card" :name="card"/>
     </div>

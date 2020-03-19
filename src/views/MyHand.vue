@@ -1,6 +1,6 @@
 <template>
   <div class="myhand">
-    <h1>My Hand</h1>
+    <h2>Your unique qualifications are:</h2>
     <div class="cards">
         <card @click="$emit('selectCard', $event)" v-for="card in cards" :key="card" :selected="selected === card" :name="card"/>
     </div>
